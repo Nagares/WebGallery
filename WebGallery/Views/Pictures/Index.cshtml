@@ -57,6 +57,7 @@
 
         //function checks for data to display to open a form to display data
 
+
         $(window).on("mousemove", (function () {
             let text = document.getElementById("FileName").outerText.trim();
 
@@ -68,10 +69,11 @@
             }
 
         }))
-
+            
         //sends image id to the server to get it displayed
-
+         
         $("#show").click(function () {
+               
                 let id = $("#item").val();
                $("#showPictures").submit();
 
