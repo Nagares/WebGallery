@@ -1,0 +1,81 @@
+﻿@model WebGallery.Models.Picture
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string nameF = Model.FileName;
+}
+
+
+
+<p>
+    <a asp-action="Create" type="button" class="btn btn-outline-info">Create New</a>
+    <form method="post" id="showPictures"  asp-action="Index">
+    <div class="form-group">
+        <select asp-for="Id" class="form-control" id="item" asp-items="ViewBag.Pictures"></select>
+    </div>
+    <div class="form-group">
+            <input type="button" class="btn btn-outline-primary  btn-block" id="show" value="Show" />
+    </div>
+   </form>
+</p>
+
+<form id="picture" hidden>
+
+    <div class="text-center">
+        <img src="@Model.FilePath" class="img-fluid" alt="@Model.FileName" style="max-height:500px;">
+    </div>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FileName)
+            </dt>
+            <dd id="FileName" class="col-sm-10">
+                @Html.DisplayFor(model => model.FileName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FileSize)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FileSize)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LoadDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LoadDate)
+            </dd>
+
+        </dl>
+    </div>
+</form>
+
+@section scripts{
+
+    <script>
+
+
+
+        $(window).on("mousemove", (function () {
+            let text = document.getElementById("FileName").outerText.trim();
+
+            if (text != "*/") {
+                $("#picture").removeAttr("hidden");
+               
+            }else{
+                $("#picture").attr("hidden");
+            }
+
+            
+        }))
+         
+        $("#show").click(function () {
+               
+                let id = $("#item").val();
+               $("#showPictures").submit();
+
+         })
+
+    </script>
+}
