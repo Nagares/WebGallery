@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +15,7 @@ namespace WebGallery.Controllers
     public class PicturesController : Controller
     {
         private readonly WebGalleryContext _context;
-        Picture picture = new Picture() { FilePath = "/", FileName = "*/", LoadDate = DateTime.Now };
+        Picture picture = new Picture();
         public PicturesController(WebGalleryContext context)
         {
             _context = context;
@@ -30,7 +32,7 @@ namespace WebGallery.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Picture pic)
         {
-            if (pic.Id == 0) picture = new Picture() { FilePath = "/", FileName = "*/", LoadDate = DateTime.Now };
+            if (pic.Id == 0) picture = new Picture() {  FileName = "*/", LoadDate = DateTime.Now };
             picture = (await _context.Picture.ToListAsync()).FirstOrDefault(p => p.Id == pic.Id);
             return await Index();
         }
@@ -43,24 +45,23 @@ namespace WebGallery.Controllers
         }
 
         // POST: Pictures/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FileName,FileSize,LoadDate,FilePath")] Picture picture)
+        public async Task<IActionResult> Create( IFormFile LoadDate)
         {
-
            
-            picture.LoadDate = DateTime.Now;
-            picture.FilePath = "C:\\Users\\Bavovna\\source\\repos\\WebGallery\\WebGallery\\images\\" + picture.FileName; //generating a link to store the path to the image (according to those tasks)
-            picture.FileName = picture.FileName.Split('.')[0];
-            if (ModelState.IsValid)
+            using (MemoryStream MS = new MemoryStream())
             {
-                _context.Add(picture);
+                LoadDate.CopyTo(MS);
+                MS.Seek(0, SeekOrigin.Begin);
+                await _context.AddAsync(new Picture { FileName = LoadDate.FileName, File = MS.ToArray(), LoadDate= DateTime.Now, FileSize =(int) LoadDate.Length });
                 await _context.SaveChangesAsync();
+            }  
+            
+              
                 return RedirectToAction(nameof(Index));
-            }
-            return View(picture);
+          
+           
         }
 
        

@@ -26,10 +26,10 @@ namespace WebGallery.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("FilePath")
+                    b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FileSize")

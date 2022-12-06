@@ -8,7 +8,7 @@ namespace WebGallery.Models
         public string FileName { get; set; }
         public int FileSize { get; set; }
         public DateTime LoadDate { get; set; }
-        public string FilePath { get; set; }
+        public byte[] File{ get; set; }
 
     }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebGallery.Migrations
 {
-    public partial class init : Migration
+    public partial class changed_type : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace WebGallery.Migrations
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileSize = table.Column<int>(type: "int", nullable: false),
                     LoadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    File = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {

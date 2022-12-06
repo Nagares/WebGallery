@@ -23,61 +23,78 @@
 <form id="picture" hidden>
 
     <div class="text-center">
-        <img src="@Model.FilePath" class="img-fluid" alt="@Model.FileName" style="max-height:500px;">
-    </div>
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.FileName)
-            </dt>
-            <dd id="FileName" class="col-sm-10">
-                @Html.DisplayFor(model => model.FileName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.FileSize)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FileSize)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.LoadDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.LoadDate)
-            </dd>
 
-        </dl>
-    </div>
-</form>
-
-@section scripts{
-
-    <script>
-
-        //function checks for data to display to open a form to display data
-
-
-        $(window).on("mousemove", (function () {
-            let text = document.getElementById("FileName").outerText.trim();
-
-            if (text != "*/") {
-                $("#picture").removeAttr("hidden");
-               
-            }else{
-                $("#picture").attr("hidden");
+        @{
+            string b64 = string.Empty;
+            if (Model.File != null)
+            {
+                byte[] img = Model.File;
+                b64 = Convert.ToBase64String(img);
+                b64 = "data:image/png;base64," + b64;
             }
+        }
+        <img src="@b64" class="img-fluid" alt="@Model.FileName" style="max-height:500px;">
+    
+    </div>
+   
+        
+                    <div>
+                        <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.FileName)
+                    </dt>
+                    <dd id="FileName" class="col-sm-10">
+                        @Html.DisplayFor(model => model.FileName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.FileSize)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.FileSize)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.LoadDate)
+                    </dt>
+           
+                    
+                @{if (!string.IsNullOrEmpty(Model.FileName))
+                    { <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.LoadDate)
+                        </dd>}}
+                    
+                </dl>
+            </div>
+    
+    </form>
 
-        }))
-            
-        //sends image id to the server to get it displayed
-         
-        $("#show").click(function () {
-               
-                let id = $("#item").val();
-               $("#showPictures").submit();
+    @section scripts{
 
-         })
+        <script>
 
-    </script>
-}
+            //function checks for data to display to open a form to display data
+
+
+            $(window).on("mousemove", (function () {
+                let text = document.getElementById("FileName").outerText.trim();
+
+                if (text != '') {
+                    $("#picture").removeAttr("hidden");
+                   
+                }else{
+                    $("#picture").attr("hidden");
+                }
+
+            }))
+                
+            //sends image id to the server to get it displayed
+             
+            $("#show").click(function () {
+                   
+                    let id = $("#item").val();
+                   $("#showPictures").submit();
+
+             })
+
+        </script>
+    }

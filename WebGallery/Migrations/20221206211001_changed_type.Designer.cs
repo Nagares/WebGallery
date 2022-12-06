@@ -10,8 +10,8 @@ using WebGallery.Data;
 namespace WebGallery.Migrations
 {
     [DbContext(typeof(WebGalleryContext))]
-    [Migration("20221203135041_init")]
-    partial class init
+    [Migration("20221206211001_changed_type")]
+    partial class changed_type
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,10 +28,10 @@ namespace WebGallery.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("FilePath")
+                    b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FileSize")
